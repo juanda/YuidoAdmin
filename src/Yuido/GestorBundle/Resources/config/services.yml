@@ -1,0 +1,162 @@
+parameters:
+#    yuido_gestor.example.class: Yuido\GestorBundle\Example
+
+services:
+    sonata.admin.servicioservidor:
+        class: Yuido\GestorBundle\Admin\ServicioServidorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Servicios del Servidor' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\ServicioServidor
+            - null
+
+    sonata.admin.servidor:
+        class: Yuido\GestorBundle\Admin\ServidorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Info Servidor' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Servidor
+            - null
+            
+    sonata.admin.documentacion:
+        class: Yuido\GestorBundle\Admin\DocumentacionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Documentación' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Documentacion
+            - null
+            
+    sonata.admin.proyecto:
+        class: Yuido\GestorBundle\Admin\ProyectoAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Proyectos' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Proyecto
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+            
+    sonata.admin.cliente:
+        class: Yuido\GestorBundle\Admin\ClienteAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Clientes' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Cliente
+            - null
+                    
+    sonata.admin.sprint:
+        class: Yuido\GestorBundle\Admin\SprintAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Sprints Scrum' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Sprint
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+     
+    sonata.admin.historiausuario:
+        class: Yuido\GestorBundle\Admin\HistoriaUsuarioAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Historias de Usuario' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\HistoriaUsuario
+            - null
+            
+    sonata.admin.visita:
+        class: Yuido\GestorBundle\Admin\VisitaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Visitas Clientes' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Visita
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+            
+    sonata.admin.yuidoempresa:
+        class: Yuido\GestorBundle\Admin\YuidoEmpresaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Yuido' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\YuidoEmpresa
+            - null
+            
+    sonata.admin.aula:
+        class: Yuido\GestorBundle\Admin\AulaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Aulas' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Aula
+            - null
+            
+    sonata.admin.formacion:
+        class: Yuido\GestorBundle\Admin\FormacionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Cursos de Formación' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Formacion
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+                      
+    sonata.admin.masterclass:
+        class: Yuido\GestorBundle\Admin\MasterClassAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Horario de Cursos' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\MasterClass
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+            
+    sonata.admin.proveedor:
+        class: Yuido\GestorBundle\Admin\ProveedorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Proveedores' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\Proveedor
+            - null
+            
+    sonata.admin.gastoproveedor:
+        class: Yuido\GestorBundle\Admin\GastoProveedorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Gastos en Proveedores' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\GastoProveedor
+            - null
+        calls:
+            - [ setTemplate, [edit, YuidoGestorBundle:Default:edit.html.twig]]
+            
+    sonata.admin.formacionuser:
+        class: Yuido\GestorBundle\Admin\FormacionUserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Nuestros Cursos' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\FormacionUser
+            - null
+            
+            
+    sonata.admin.formacionproveedor:
+        class: Yuido\GestorBundle\Admin\FormacionProveedorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Proveedores en un Curso' }
+        arguments:
+            - null
+            - Yuido\GestorBundle\Entity\FormacionProveedor
+            - null
+            
+            
