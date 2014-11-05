@@ -1,0 +1,7 @@
+# global settings
+name: Yuido Admin System
+email: juandalibaba@gmail.com
+notifications: false
+logging: true
+maxlogs: 30
+ssh_needs_tty: false
