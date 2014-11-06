@@ -1,0 +1,6 @@
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+
+    {% for if in object.serviciosservidor %}
+        <a href="{{ url('admin_yuido_gestor_servicioservidor_show', {'id': if.id}) }}">{{ if }}</a> |
+    {% endfor %}
+</td>

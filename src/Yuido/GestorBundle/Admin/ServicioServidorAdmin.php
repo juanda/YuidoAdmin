@@ -8,6 +8,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
 
@@ -20,21 +22,27 @@ class ServicioServidorAdmin extends Admin{
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        //Se obtiene la entidad
-        $entity = $this->getObject($this->getSubject()->getId());
-        
         $formMapper
             ->add('descripcion', null, array('label' => 'Descripcion'))
             ->add('username', null, array('label' => 'Username'))
             ->add('password', null, array('label' => 'Password'))
             ->add('importe', null, array('label' => 'Importe'))
             ->add('periodo', 'choice', array(
-                                        'choices' => $this->periodos, 
-                                        'preferred_choices' => array( ($entity) ? $entity->getPeriodo(): ''),
+                                        'choices' => $this->periodos,
                                         'multiple' => false,
                                         'expanded' => false,
                                         'empty_data'  => -1))
-            ->add('servidor');
+            ;
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper){
+        $showMapper
+            ->add('descripcion', 'text')
+            ->add('username', 'text')
+            ->add('password', 'text')
+            ->add('importe', 'text')
+            ->add('periodo', 'text')
+        ;
     }
 
     // Fields to be shown on filter forms
@@ -59,6 +67,13 @@ class ServicioServidorAdmin extends Admin{
                     'edit' => array(),
                     'delete' => array(),
                 )));
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        // to remove a single route
+        $collection->remove('create');
+
     }
 
 }

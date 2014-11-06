@@ -49,27 +49,21 @@ class Servidor
      */
     private $passwordPanelAdmin;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url_admin_user", type="string", length=255)
-     */
-    private $urlAdminUser;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password_admin_user", type="string", length=255)
+     * @ORM\Column(name="datos", type="text")
      */
-    private $passwordAdminUser;
-    
+    private $datos;
+
     
      ////////////  RELACIONES  //////////////
     
     /**
-     * @ORM\OneToMany(targetEntity="ServicioServidor", mappedBy="servidor")
+     * @ORM\OneToMany(targetEntity="ServicioServidor", mappedBy="servidor", cascade={"persist"})
      */
-    protected $serviciosServidor;
+    private $serviciosServidor;
     
   
     
@@ -301,5 +295,21 @@ class Servidor
     public function getProyectos()
     {
         return $this->proyectos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatos()
+    {
+        return $this->datos;
+    }
+
+    /**
+     * @param string $datos
+     */
+    public function setDatos($datos)
+    {
+        $this->datos = $datos;
     }
 }
