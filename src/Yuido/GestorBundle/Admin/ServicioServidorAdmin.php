@@ -69,11 +69,4 @@ class ServicioServidorAdmin extends Admin{
                 )));
     }
 
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        // to remove a single route
-        $collection->remove('create');
-
-    }
-
 }

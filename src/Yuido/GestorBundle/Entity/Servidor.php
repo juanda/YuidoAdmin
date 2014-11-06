@@ -61,7 +61,7 @@ class Servidor
      ////////////  RELACIONES  //////////////
     
     /**
-     * @ORM\OneToMany(targetEntity="ServicioServidor", mappedBy="servidor", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ServicioServidor", mappedBy="servidor", cascade={"persist"}, orphanRemoval=true)
      */
     private $serviciosServidor;
     
