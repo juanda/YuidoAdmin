@@ -2,6 +2,12 @@ parameters:
 #    yuido_gestor.example.class: Yuido\GestorBundle\Example
 
 services:
+    yuido.uploader:
+        class: Jazzyweb\FileUploader\FileUploader
+        arguments:
+          - %upload_dir%
+          - @doctrine.orm.entity_manager
+
     sonata.admin.servicioservidor:
         class: Yuido\GestorBundle\Admin\ServicioServidorAdmin
         tags:

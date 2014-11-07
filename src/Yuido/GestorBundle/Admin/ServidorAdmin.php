@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
+use Symfony\Component\Validator\Constraints\Date;
 
 
 class ServidorAdmin extends Admin{
@@ -59,7 +60,7 @@ class ServidorAdmin extends Admin{
     {
         $listMapper
             ->add('empresa', null, array('label' => 'Empresa'))
-            ->add('urlPanelAdmin', null, array('label' => 'URL Panel Admin'))
+            ->add('urlPanelAdmin', 'url', array('label' => 'URL Panel Admin'))
             ->add('userPanelAdmin', null, array('label' => 'User Panel Admin'))
             ->add('passwordPanelAdmin', null, array('label' => 'password Panel Admin'))
             ->add('serviciosServidor', null, array('template' => 'YuidoGestorBundle:Servidor:servicios.html.twig' ))
@@ -71,7 +72,19 @@ class ServidorAdmin extends Admin{
                 )));
     }
 
+    public function preCreate($servidor){
+
+        $date = new \DateTime();
+
+        $servidor->setCreatedAt($date);
+        $servidor->setUpdatedAt($date);
+    }
+
     public function preUpdate($servidor){
+
+        $date = new \DateTime();
+
+        $servidor->setUpdatedAt($date);
 
         $this->getForm()->getData()->getServiciosServidor()->map(function ($servicio) use($servidor){
 

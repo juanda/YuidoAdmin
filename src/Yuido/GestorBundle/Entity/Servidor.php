@@ -4,6 +4,7 @@ namespace Yuido\GestorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Servidor
@@ -26,6 +27,7 @@ class Servidor
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="empresa", type="string", length=255)
      */
     private $empresa;
@@ -33,6 +35,7 @@ class Servidor
     /**
      * @var string
      *
+     * @Assert\Url()
      * @ORM\Column(name="url_panel_admin", type="string", length=255)
      */
     private $urlPanelAdmin;
