@@ -3,6 +3,7 @@
 namespace Yuido\GestorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Servidor
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Servidor
 {
+    use ORMBehaviors\Timestampable\Timestampable;
     /**
      * @var integer
      *

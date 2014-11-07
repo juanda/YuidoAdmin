@@ -19,6 +19,8 @@ services:
             - null
             - Yuido\GestorBundle\Entity\Servidor
             - null
+        calls:
+            - [ setTemplate, [show, YuidoGestorBundle:Servidor:show.html.twig]]
             
     sonata.admin.documentacion:
         class: Yuido\GestorBundle\Admin\DocumentacionAdmin

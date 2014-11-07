@@ -32,6 +32,7 @@ class ServicioServidorAdmin extends Admin{
                                         'multiple' => false,
                                         'expanded' => false,
                                         'empty_data'  => -1))
+            ->add('datos')
             ;
     }
 
@@ -42,6 +43,7 @@ class ServicioServidorAdmin extends Admin{
             ->add('password', 'text')
             ->add('importe', 'text')
             ->add('periodo', 'text')
+            ->add('datos', 'text')
         ;
     }
 

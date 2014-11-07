@@ -3,6 +3,7 @@
 namespace Yuido\GestorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * ServicioServidor
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ServicioServidor
 {
+    use ORMBehaviors\Timestampable\Timestampable;
     /**
      * @var integer
      *
@@ -48,31 +50,39 @@ class ServicioServidor
      * @ORM\Column(name="importe", type="integer")
      */
     private $importe;
-    
-    
-     /**
+
+
+    /**
      * @var string
      * @ORM\Column(name="periodo", type="string", nullable=true, columnDefinition="ENUM('DIARIO','MENSUAL','TRIMESTRAL','ANUAL')")
      */
     private $periodo;
-    
-    
-    
-     ////////////  RELACIONES  //////////////
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="datos", type="text")
+     */
+    private $datos;
+
+
+
+
+    ////////////  RELACIONES  //////////////
+
     /**
      * @ORM\ManyToOne(targetEntity="Servidor", inversedBy="serviciosServidor")
      */
     protected $servidor;
-    
-   /**
+
+    /**
      * @ORM\ManyToMany(targetEntity="Proyecto", mappedBy="serviciosServidor")
      */
     protected $proyectos;
-    
+
     ////////////////////////////////////////
 
-    
+
     public function __toString()
     {
         //Error en Sonata si devuelve null, por eso tiene que devolver una cadena.
@@ -82,7 +92,7 @@ class ServicioServidor
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,14 +108,14 @@ class ServicioServidor
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
     /**
      * Get descripcion
      *
-     * @return string 
+     * @return string
      */
     public function getDescripcion()
     {
@@ -121,14 +131,14 @@ class ServicioServidor
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -144,14 +154,14 @@ class ServicioServidor
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -168,14 +178,14 @@ class ServicioServidor
     public function setServidor(\Yuido\GestorBundle\Entity\Servidor $servidor = null)
     {
         $this->servidor = $servidor;
-    
+
         return $this;
     }
 
     /**
      * Get servidor
      *
-     * @return \Yuido\GestorBundle\Entity\Servidor 
+     * @return \Yuido\GestorBundle\Entity\Servidor
      */
     public function getServidor()
     {
@@ -192,14 +202,14 @@ class ServicioServidor
     public function setImporte($importe)
     {
         $this->importe = $importe;
-    
+
         return $this;
     }
 
     /**
      * Get importe
      *
-     * @return integer 
+     * @return integer
      */
     public function getImporte()
     {
@@ -215,14 +225,14 @@ class ServicioServidor
     public function setPeriodo($periodo)
     {
         $this->periodo = $periodo;
-    
+
         return $this;
     }
 
     /**
      * Get periodo
      *
-     * @return string 
+     * @return string
      */
     public function getPeriodo()
     {
@@ -235,7 +245,7 @@ class ServicioServidor
     {
         $this->proyectos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add proyectos
      *
@@ -245,7 +255,7 @@ class ServicioServidor
     public function addProyecto(\Yuido\GestorBundle\Entity\Proyecto $proyectos)
     {
         $this->proyectos[] = $proyectos;
-    
+
         return $this;
     }
 
@@ -262,10 +272,26 @@ class ServicioServidor
     /**
      * Get proyectos
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProyectos()
     {
         return $this->proyectos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatos()
+    {
+        return $this->datos;
+    }
+
+    /**
+     * @param string $datos
+     */
+    public function setDatos($datos)
+    {
+        $this->datos = $datos;
     }
 }
