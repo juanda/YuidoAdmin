@@ -83,11 +83,11 @@ class Sprint
     public function __toString()
     {
         //Error en Sonata si devuelve null, por eso tiene que devolver una cadena.
-        return $this->getNombre().' - '.$this->getProyecto()->getNombre() ?: '';
+
+        $nombreProyecto = ($this->getProyecto())? $this->getProyecto()->getNombre() : '';
+        return $this->getNombre().' - '.$nombreProyecto;
     }
-    
-    
-    
+
     /**
      * Get id
      *

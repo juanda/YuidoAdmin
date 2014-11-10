@@ -59,55 +59,55 @@ file that was distributed with this source code.
             Actualizado: {{ servicio.updatedAt | date('d/m/Y h:i:s') }}
             <table class="table table-bordered">
                 <thead>
-                    <tr class="sonata-ba-view-title">
-                        <th colspan="2">
-                            {{ servicio.descripcion }}
-                        </th>
-                    </tr>
+                <tr class="sonata-ba-view-title">
+                    <th colspan="2">
+                        {{ servicio.descripcion }}
+                    </th>
+                </tr>
 
                 </thead>
                 <tbody>
-                    <tr class="sonata-ba-view-container">
-                        <th>
-                            username
-                        </th>
-                        <td>
-                            {{ servicio.username }}
-                        </td>
-                    </tr>
-                    <tr class="sonata-ba-view-container">
-                        <th>
-                            password
-                        </th>
-                        <td>
-                            {{ servicio.password }}
-                        </td>
-                    </tr>
-                    <tr class="sonata-ba-view-container">
-                        <th>
-                            importe
-                        </th>
-                        <td>
-                            {{ servicio.importe }}
-                        </td>
-                    </tr>
-                    <tr class="sonata-ba-view-container">
-                        <th>
-                            periodo
-                        </th>
-                        <td>
-                            {{ servicio.periodo }}
-                        </td>
-                    </tr>
-                    <tr class="sonata-ba-view-container">
-                        <th>
-                            datos
-                        </th>
-                        <td>
-                            {{ servicio.datos }}
-                        </td>
+                <tr class="sonata-ba-view-container">
+                    <th>
+                        username
+                    </th>
+                    <td>
+                        {{ servicio.username }}
+                    </td>
+                </tr>
+                <tr class="sonata-ba-view-container">
+                    <th>
+                        password
+                    </th>
+                    <td>
+                        {{ servicio.password }}
+                    </td>
+                </tr>
+                <tr class="sonata-ba-view-container">
+                    <th>
+                        importe
+                    </th>
+                    <td>
+                        {{ servicio.importe }}
+                    </td>
+                </tr>
+                <tr class="sonata-ba-view-container">
+                    <th>
+                        periodo
+                    </th>
+                    <td>
+                        {{ servicio.periodo }}
+                    </td>
+                </tr>
+                <tr class="sonata-ba-view-container">
+                    <th>
+                        datos
+                    </th>
+                    <td>
+                        {{ servicio.datos }}
+                    </td>
 
-                    </tr>
+                </tr>
 
                 </tbody>
 
@@ -115,5 +115,20 @@ file that was distributed with this source code.
         {% endfor %}
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 
+        <form action="{{ url('yuido_file_manager_upload', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}"
+              class="dropzone"
+              id="my-awesome-dropzone"></form>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('dropzone/downloads/css/dropzone.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('dropzone/downloads/dropzone.js') }}"></script>
+
+
 {% endblock %}

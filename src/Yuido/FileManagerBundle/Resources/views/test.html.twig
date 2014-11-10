@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<form name="test" method="post"
+      action="{{ url('yuido_file_manager_upload', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': 1}) }}"
+        enctype="multipart/form-data">
+
+    <input type="file" name="file" value="upload" />
+    <input type="submit" value="dale" />
+
+</form>
+
+{% endblock %}

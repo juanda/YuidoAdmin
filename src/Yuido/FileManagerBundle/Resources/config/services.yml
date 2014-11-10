@@ -1,0 +1,23 @@
+services:
+    sonata.admin.file:
+        class: Yuido\FileManagerBundle\Admin\FileAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: 'Ficheros' }
+        arguments:
+            - null
+            - Yuido\FileManagerBundle\Entity\File
+            - null
+
+    yuido_file_uploader:
+      class: Jazzyweb\FileUploader\FileUploader
+      arguments:
+        - %upload_dir%
+        - @doctrine.orm.entity_manager
+
+    yuido_file_manager:
+        class: Yuido\FileManagerBundle\FileManager
+        arguments:
+          - @yuido_file_uploader
+          - @validator
+          - %max_size%
+          - %mime_types%

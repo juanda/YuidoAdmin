@@ -5,6 +5,7 @@ namespace Yuido\GestorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Symfony\Component\Validator\Constraints as Assert;
+use Yuido\FileManagerBundle\FileManageableInterfaz;
 
 /**
  * Servidor
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Yuido\GestorBundle\Entity\ServidorRepository")
  */
-class Servidor
+class Servidor implements FileManageableInterfaz
 {
     use ORMBehaviors\Timestampable\Timestampable;
     /**
@@ -69,7 +70,14 @@ class Servidor
      * @ORM\OneToMany(targetEntity="ServicioServidor", mappedBy="servidor", cascade={"persist"}, orphanRemoval=true)
      */
     private $serviciosServidor;
-    
+
+    /**
+     * @ORM\ManyToMany(targetEntity="\Yuido\FileManagerBundle\Entity\File")
+     * @ORM\JoinTable(name="servidor_file",
+     *      joinColumns={@ORM\JoinColumn(name="servidor_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="file_id", referencedColumnName="id", unique=true)})
+     */
+    private $files;
   
     
     ////////////////////////////////////////
@@ -316,5 +324,38 @@ class Servidor
     public function setDatos($datos)
     {
         $this->datos = $datos;
+    }
+
+    /**
+     * Add files
+     *
+     * @param \Yuido\FileManagerBundle\Entity\File $files
+     * @return Servidor
+     */
+    public function addFile(\Yuido\FileManagerBundle\Entity\File $files)
+    {
+        $this->files[] = $files;
+
+        return $this;
+    }
+
+    /**
+     * Remove files
+     *
+     * @param \Yuido\FileManagerBundle\Entity\File $files
+     */
+    public function removeFile(\Yuido\FileManagerBundle\Entity\File $files)
+    {
+        $this->files->removeElement($files);
+    }
+
+    /**
+     * Get files
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

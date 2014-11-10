@@ -2,6 +2,14 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
+yuido_file_manager:
+  upload_dir: %upload_destination%
+  max_size: %upload_max_size%
+  mime_types:
+    - application/pdf
+    - image/png
+    - image/jpeg
+
 fos_user:
     db_driver: orm
     firewall_name: main
@@ -69,6 +77,10 @@ sonata_admin:
       Datos Yuido Empresa:
         items:
             - sonata.admin.yuidoempresa
+
+      Ficheros:
+        items:
+            - sonata.admin.file
                        
 
   templates:

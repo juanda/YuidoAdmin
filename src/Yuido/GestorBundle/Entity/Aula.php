@@ -306,4 +306,27 @@ class Aula
     {
         return $this->masterClasses;
     }
+
+    /**
+     * Add masterClasses
+     *
+     * @param \Yuido\GestorBundle\Entity\MasterClass $masterClasses
+     * @return Aula
+     */
+    public function addMasterClass(\Yuido\GestorBundle\Entity\MasterClass $masterClasses)
+    {
+        $this->masterClasses[] = $masterClasses;
+
+        return $this;
+    }
+
+    /**
+     * Remove masterClasses
+     *
+     * @param \Yuido\GestorBundle\Entity\MasterClass $masterClasses
+     */
+    public function removeMasterClass(\Yuido\GestorBundle\Entity\MasterClass $masterClasses)
+    {
+        $this->masterClasses->removeElement($masterClasses);
+    }
 }

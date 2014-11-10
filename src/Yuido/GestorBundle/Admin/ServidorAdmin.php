@@ -2,7 +2,6 @@
 
 namespace Yuido\GestorBundle\Admin;
 
-
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -25,14 +24,20 @@ class ServidorAdmin extends Admin{
             ->add('userPanelAdmin', null, array('label' => 'User Panel Admin'))
             ->add('passwordPanelAdmin', null, array('label' => 'password Panel Admin'))
             ->add('datos', null, array('label' =>'Datos' ))
-            ;
+        ;
 
         if($action == "Edit"){
-            $formMapper->add('serviciosServidor', 'sonata_type_collection',array(), array(
-                'edit' => 'inline',
-                'inline' => 'table',
-                'sortable' => 'position',
-            ))
+            $formMapper
+                ->add('serviciosServidor', 'sonata_type_collection',array(), array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position',
+                ))
+                ->add('files', 'sonata_type_collection', array(), array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'position',
+                ))
             ;
         }
     }
@@ -82,6 +87,8 @@ class ServidorAdmin extends Admin{
 
     public function preUpdate($servidor){
 
+        $container = $this->getConfigurationPool()->getContainer();
+
         $date = new \DateTime();
 
         $servidor->setUpdatedAt($date);
@@ -91,6 +98,17 @@ class ServidorAdmin extends Admin{
             $servicio->setServidor($servidor);
 
         });
+
+        $this->getForm()->getData()->getFiles()->map(function ($file) use($container){
+
+            $fileManager = $container->get('yuido_file_manager');
+
+            if($file->getFile()) {
+                $fileManager->upload($file);
+            }
+        });
+
+        
     }
 
 }

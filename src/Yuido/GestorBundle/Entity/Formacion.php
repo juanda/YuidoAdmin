@@ -541,4 +541,27 @@ class Formacion
     {
         return $this->formacionProveedores;
     }
+
+    /**
+     * Add masterClasses
+     *
+     * @param \Yuido\GestorBundle\Entity\MasterClass $masterClasses
+     * @return Formacion
+     */
+    public function addMasterClass(\Yuido\GestorBundle\Entity\MasterClass $masterClasses)
+    {
+        $this->masterClasses[] = $masterClasses;
+
+        return $this;
+    }
+
+    /**
+     * Remove masterClasses
+     *
+     * @param \Yuido\GestorBundle\Entity\MasterClass $masterClasses
+     */
+    public function removeMasterClass(\Yuido\GestorBundle\Entity\MasterClass $masterClasses)
+    {
+        $this->masterClasses->removeElement($masterClasses);
+    }
 }

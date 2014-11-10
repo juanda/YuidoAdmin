@@ -1,3 +1,7 @@
+yuido_file_manager:
+    resource: "@YuidoFileManagerBundle/Resources/config/routing.yml"
+    prefix:   /
+
 yuido_gestor:
     resource: "@YuidoGestorBundle/Resources/config/routing.yml"
     prefix:   /

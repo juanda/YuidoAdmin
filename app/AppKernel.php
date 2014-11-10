@@ -30,9 +30,12 @@ class AppKernel extends Kernel
 
             new Jazzyweb\UserBundle\JwUserBundle(),
             new Yuido\GestorBundle\YuidoGestorBundle(),
+            new Yuido\FileManagerBundle\YuidoFileManagerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+
+            $bundles[] = new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
