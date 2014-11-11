@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\ValidatorInterface;
 use Yuido\FileManagerBundle\Exception\NoFileManageableClassException;
+use Yuido\FileManagerBundle\Exception\ObjectFileNotExistException;
 use Yuido\FileManagerBundle\Exception\ObjectFileNotExistsException;
 use Yuido\FileManagerBundle\Exception\ParentObjectNotExistException;
 
@@ -85,6 +86,10 @@ class FileManager {
 
         $file = $repoFile->find($fileId);
 
+        if(!$file instanceof \Yuido\FileManagerBundle\Entity\File){
+            throw new ObjectFileNotExistException("El fichero $fileId no existe");
+        }
+
         // Delete the associated file (physical)
         $this->delete($file);
 
@@ -95,6 +100,7 @@ class FileManager {
 
         $parentObject->removeFile($file);
 
+        $em->remove($file);
         $em->persist($parentObject);
         $em->flush();
 

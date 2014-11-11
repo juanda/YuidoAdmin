@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Yuido\FileManagerBundle\Exception\NoUploadedFileException;
+use Yuido\FileManagerBundle\Exception\ObjectFileNotExistException;
 
 class FileManagerController extends Controller
 {
@@ -81,7 +82,12 @@ class FileManagerController extends Controller
             $filemanager = $this->get('yuido_file_manager');
             $filemanager->dessasociateAndDelete($fileId, $entityName, $entityId);
 
-            return $this->renderJson(array('msg' => 'fichero eliminado y desasociado'));
+            return $this->renderJson(array('msg' => 'fichero ' .$fileId .' eliminado y desasociado'));
+        }catch (ObjectFileNotExistException $e){
+            $error['msg'] = $e->getMessage();
+            $error['code'] = 404;
+
+            return $this->renderJson($error, 500);
         }catch (\Exception $e){
             $error['msg'] = "Excepción no controlada: " . $e->getMessage();
             $error['code'] = 404;
