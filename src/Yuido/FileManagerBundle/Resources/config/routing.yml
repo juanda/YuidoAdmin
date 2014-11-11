@@ -1,8 +1,16 @@
+yuido_file_manager_delete:
+    path:     /delete/{fileId}/{entityName}/{entityId}
+    defaults: { _controller: YuidoFileManagerBundle:FileManager:delete }
+    requirements:
+      fileId: \d+
+      entityId: \d+
+
 yuido_file_manager_upload:
     path:     /upload/{entityName}/{entityId}
     defaults: { _controller: YuidoFileManagerBundle:FileManager:upload }
     requirements:
-      entity_id: \d+
+      fileId: \d+
+      entityId: \d+
 
 yuido_file_manager_show_uploaded_file:
     path:     /show_uploaded_file/{id}

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\ValidatorInterface;
 use Yuido\FileManagerBundle\Exception\NoFileManageableClassException;
+use Yuido\FileManagerBundle\Exception\ObjectFileNotExistsException;
 use Yuido\FileManagerBundle\Exception\ParentObjectNotExistException;
 
 class FileManager {
@@ -75,6 +76,30 @@ class FileManager {
         $em->flush();
 
         return $file;
+    }
+
+    public function dessasociateAndDelete($fileId, $entityName, $entityId){
+        $em = $this->fileUploader->getEntityManager();
+
+        $repoFile = $em->getRepository('Yuido\FileManagerBundle\Entity\File');
+
+        $file = $repoFile->find($fileId);
+
+        // Delete the associated file (physical)
+        $this->delete($file);
+
+        $repoParentObject = $em->getRepository($entityName);
+        $parentObject = $repoParentObject->find($entityId);
+
+        $this->checkParentObject($parentObject);
+
+        $parentObject->removeFile($file);
+
+        $em->persist($parentObject);
+        $em->flush();
+
+        return $fileId;
+
     }
 
     /**

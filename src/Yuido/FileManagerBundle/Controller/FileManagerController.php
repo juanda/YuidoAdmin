@@ -41,9 +41,9 @@ class FileManagerController extends Controller
 
     public function uploadAction($entityName, $entityId, Request $request)
     {
-        if(!$this->isXmlHttpRequest()){
-            throw new NotAcceptableHttpException("Esta acción solo puede ser usada como XmlHttpRequest");
-        }
+//        if(!$this->isXmlHttpRequest()){
+//            throw new NotAcceptableHttpException("Esta acción solo puede ser usada como XmlHttpRequest");
+//        }
 
         try {
             $filemanager = $this->get('yuido_file_manager');
@@ -69,6 +69,20 @@ class FileManagerController extends Controller
 
             return $this->renderJson($error, 404);
         }catch(\Exception $e){
+            $error['msg'] = "Excepción no controlada: " . $e->getMessage();
+            $error['code'] = 404;
+
+            return $this->renderJson($error, 500);
+        }
+    }
+
+    public function deleteAction($fileId, $entityName, $entityId){
+        try{
+            $filemanager = $this->get('yuido_file_manager');
+            $filemanager->dessasociateAndDelete($fileId, $entityName, $entityId);
+
+            return $this->renderJson(array('msg' => 'fichero eliminado y desasociado'));
+        }catch (\Exception $e){
             $error['msg'] = "Excepción no controlada: " . $e->getMessage();
             $error['code'] = 404;
 

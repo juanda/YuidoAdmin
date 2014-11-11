@@ -33,11 +33,6 @@ class ServidorAdmin extends Admin{
                     'inline' => 'table',
                     'sortable' => 'position',
                 ))
-                ->add('files', 'sonata_type_collection', array(), array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                    'sortable' => 'position',
-                ))
             ;
         }
     }
@@ -98,16 +93,6 @@ class ServidorAdmin extends Admin{
             $servicio->setServidor($servidor);
 
         });
-
-        $this->getForm()->getData()->getFiles()->map(function ($file) use($container){
-
-            $fileManager = $container->get('yuido_file_manager');
-
-            if($file->getFile()) {
-                $fileManager->upload($file);
-            }
-        });
-
         
     }
 
