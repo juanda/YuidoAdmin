@@ -262,6 +262,7 @@ class File implements UploadableEntityInterface
     public function toArray(){
 
         return array(
+            'fid' => $this->id,
             'name' => $this->name,
             'size' => $this->size,
             'mime_type' => $this->mimeType

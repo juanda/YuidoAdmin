@@ -51,6 +51,18 @@ class FileManager {
 
     }
 
+    /**
+     * Create a new File Object, moves the uploaded file to the correct directory, assign the uploaded file
+     * to the created file object, and associates to the parent object given by $entityName and $entityId
+     *
+     * @param UploadedFile $uploadedFile
+     * @param $entityName
+     * @param $entityId
+     * @return Entity\File
+     * @throws NoFileManageableClassException
+     * @throws ParentObjectNotExistException
+     * @throws \Jazzyweb\FileUploader\FileUploaderException
+     */
     public function uploadAndAssociate(UploadedFile $uploadedFile, $entityName, $entityId){
 
         $em = $this->fileUploader->getEntityManager();
@@ -58,10 +70,7 @@ class FileManager {
         // Creamos la entidad con el fichero asociado
         $file = $this->createNewFile($uploadedFile);
 
-        $repo = $em->getRepository($entityName);
-        $parentObject = $repo->find($entityId);
-
-        $this->checkParentObject($parentObject);
+        $parentObject = $this->getParentObject($entityName, $entityId);
 
         $dir = $this->parse_classname($entityName);
 
@@ -79,6 +88,18 @@ class FileManager {
         return $file;
     }
 
+    /**
+     * Dessasociate the File object which id is $fileId from the parent object given by $entityName and
+     * $entityId. Then delete the physical file and the File object.
+     *
+     * @param $fileId
+     * @param $entityName
+     * @param $entityId
+     * @return mixed
+     * @throws NoFileManageableClassException
+     * @throws ObjectFileNotExistException
+     * @throws ParentObjectNotExistException
+     */
     public function dessasociateAndDelete($fileId, $entityName, $entityId){
         $em = $this->fileUploader->getEntityManager();
 
@@ -93,10 +114,7 @@ class FileManager {
         // Delete the associated file (physical)
         $this->delete($file);
 
-        $repoParentObject = $em->getRepository($entityName);
-        $parentObject = $repoParentObject->find($entityId);
-
-        $this->checkParentObject($parentObject);
+        $parentObject = $this->getParentObject($entityName, $entityId);
 
         $parentObject->removeFile($file);
 
@@ -106,6 +124,22 @@ class FileManager {
 
         return $fileId;
 
+    }
+
+    /**
+     *
+     * Get the File objects associated to a parent object given by $entityName and $entityId
+     *
+     * @param $entityName
+     * @param $entityId
+     * @return mixed
+     */
+    public function get($entityName, $entityId){
+        $parentObject = $this->getParentObject($entityName, $entityId);
+
+        $files = $parentObject->getFiles();
+
+        return $files;
     }
 
     /**
@@ -158,6 +192,16 @@ class FileManager {
         $this->characterize($file, $uploadedFile);
 
         return $file;
+    }
+
+    protected function getParentObject($entityName, $entityId){
+        $em = $this->fileUploader->getEntityManager();
+        $repo = $em->getRepository($entityName);
+        $parentObject = $repo->find($entityId);
+
+        $this->checkParentObject($parentObject);
+
+        return $parentObject;
     }
 
     protected function characterize(\Yuido\FileManagerBundle\Entity\File $file, UploadedFile $uploadedFile){

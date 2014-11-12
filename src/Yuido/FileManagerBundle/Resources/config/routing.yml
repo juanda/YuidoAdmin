@@ -1,8 +1,13 @@
-yuido_file_manager_delete:
-    path:     /delete/{fileId}/{entityName}/{entityId}
-    defaults: { _controller: YuidoFileManagerBundle:FileManager:delete }
+yuido_file_manager_get:
+    path:     /get/{entityName}/{entityId}
+    defaults: { _controller: YuidoFileManagerBundle:FileManager:get }
     requirements:
-      fileId: \d+
+      entityId: \d+
+
+yuido_file_manager_delete:
+    path:     /delete/{entityName}/{entityId}/{fileId}
+    defaults: { _controller: YuidoFileManagerBundle:FileManager:delete, fileId: '' }
+    requirements:
       entityId: \d+
 
 yuido_file_manager_upload:

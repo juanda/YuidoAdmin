@@ -21,7 +21,7 @@ file that was distributed with this source code.
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
 {% block show %}
-    <div class="sonata-ba-view">
+    <div class="sonata-ba-view" ng-app="fileManager">
         {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
         {% for name, view_group in admin.showgroups %}
@@ -115,29 +115,32 @@ file that was distributed with this source code.
         {% endfor %}
         {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 
-        <table class="table table-bordered">
+
+        <table id="tableFiles" ng-controller="FileManagerController"  ng-model="files" class="table table-bordered">
             <thead>
             <th>Nombre fichero</th>
             <th>eliminar</th>
             </thead>
-            <tbody>
-            {% for file in object.files %}
-                <tr>
-                    <td>
-                        {{ file.name }}
-                    </td>
-                    <td>
-                        <button id="{{ 'file_' ~ file.id }}">delete</button>{{ url('yuido_file_manager_delete', {'fileId': file.id,'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}
-                    </td>
-                </tr>
-
-            {% endfor %}
+            {% verbatim %}
+            <tbody ng-repeat="file in files">
+            <tr>
+                <td>
+                    {{ file.name }}
+                </td>
+                <td>
+                    <button  ng-click="delete(file)" >delete</button>
+                </td>
+            </tr>
             </tbody>
+            {% endverbatim %}
         </table>
 
         <form action="{{ url('yuido_file_manager_upload', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}"
               class="dropzone"
-              id="my-awesome-dropzone"></form>
+              id="my-awesome-dropzone">
+
+        </form>
+
     </div>
 {% endblock %}
 
@@ -149,9 +152,75 @@ file that was distributed with this source code.
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('dropzone/downloads/dropzone.js') }}"></script>
+    <script src="{{ asset('angular/angular.min.js') }}"></script>
 
     <script>
-        $('#file')
+        var fileManager = angular.module('fileManager', []);
+        fileManager.controller('FileManagerController', [
+            '$scope',
+            '$http',
+            function($scope, $http){
+
+                $scope.kk = function(){
+                    alert('kaka');
+                };
+                $scope.get = function(){
+                    $http.get('{{ url('yuido_file_manager_get', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}')
+                            .success(function(data){
+                                $scope.files = data;
+                            })
+                            .error(function(e){
+
+                            });
+
+                };
+                $scope.delete = function(file){
+
+                    $http.get('{{ url('yuido_file_manager_delete', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}' + '/' + file.id)
+                            .success(function(data){
+                                $scope.get();
+                            })
+                            .error(function(e){
+
+                            });
+                };
+
+                $scope.get();
+            }
+        ]);
+
+        $(function() {
+            var scope = angular.element(document.getElementById("tableFiles")).scope();
+
+
+            Dropzone.options.myAwesomeDropzone = {
+                addRemoveLinks: true,
+                removedfile: function(file) {
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                init: function() {
+                    this.on("queuecomplete", function() {
+
+                        scope.$apply(function () {
+                            scope.get();
+                        });
+                    });
+                    this.on("removedfile", function(file) {
+                        console.log(file);
+                        if (!file.serverId) { return; }
+//                        $.get(window.appBaseUrl+"file/delete/" + file.serverId);
+                        $.get('{{ url('yuido_file_manager_delete', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}' + '/' + file.serverId);
+                    });
+                }
+            };
+
+
+        });
+
+
     </script>
+
+
 
 {% endblock %}

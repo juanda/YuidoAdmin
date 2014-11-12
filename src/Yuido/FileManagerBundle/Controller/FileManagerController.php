@@ -96,6 +96,27 @@ class FileManagerController extends Controller
         }
     }
 
+    public function getAction($entityName, $entityId){
+        try{
+            $filemanager = $this->get('yuido_file_manager');
+            $files = $filemanager->get($entityName, $entityId);
+
+            $arrFiles = array();
+            foreach ($files as $file) {
+                $arrFiles[] = $file->toArray();
+            }
+
+            return $this->renderJson($arrFiles);
+
+
+        }catch (\Exception $e){
+            $error['msg'] = "Excepción no controlada: " . $e->getMessage();
+            $error['code'] = 404;
+
+            return $this->renderJson($error, 500);
+        }
+    }
+
 
     public function testAction(){
 
