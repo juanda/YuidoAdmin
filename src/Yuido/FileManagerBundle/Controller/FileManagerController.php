@@ -5,10 +5,13 @@ namespace Yuido\FileManagerBundle\Controller;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Yuido\FileManagerBundle\Entity\File;
 use Yuido\FileManagerBundle\Exception\NoUploadedFileException;
 use Yuido\FileManagerBundle\Exception\ObjectFileNotExistException;
 
@@ -115,6 +118,24 @@ class FileManagerController extends Controller
 
             return $this->renderJson($error, 500);
         }
+    }
+
+    public function downloadAction($fileId){
+
+        $fileRepo = $this->getDoctrine()->getManager()->getRepository('YuidoFileManagerBundle:File');
+
+        $file = $fileRepo->find($fileId);
+
+        if(!$file instanceof File){
+            throw new NotFoundHttpException('No se encuentra el fichero con id ' . $fileId);
+        }
+
+        $filemanager = $this->get('yuido_file_manager');
+
+        $response = new BinaryFileResponse($filePath);
+
+
+
     }
 
 

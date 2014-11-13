@@ -18,7 +18,7 @@ services:
         arguments:
             - null
             - Yuido\GestorBundle\Entity\Servidor
-            - null
+            - YuidoFileManagerBundle:EntityWithFiles
         calls:
             - [ setTemplate, [show, YuidoGestorBundle:Servidor:show.html.twig]]
             

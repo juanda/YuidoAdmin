@@ -5,6 +5,7 @@ namespace Yuido\FileManagerBundle;
 use Doctrine\ORM\EntityNotFoundException;
 use Jazzyweb\FileUploader\FileUploader;
 use Jazzyweb\FileUploader\UploadableEntityInterface;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\File;
@@ -48,6 +49,20 @@ class FileManager {
         $errorList = $this->validator->validate($object->getFile(), $fileConstraint);
 
         return $errorList;
+
+    }
+
+    public function getFilePath(\Yuido\FileManagerBundle\Entity\File $file){
+
+        $fs = new Filesystem();
+
+        $filePath = $this->fileUploader->getUploadDir() . DIRECTORY_SEPARATOR . $file->getPath();
+
+        if(!$fs->exists($filePath)){
+            throw new FileNotFoundException('El fichero ' . $filePath . ' no existe');
+        }
+
+        return $filePath;
 
     }
 

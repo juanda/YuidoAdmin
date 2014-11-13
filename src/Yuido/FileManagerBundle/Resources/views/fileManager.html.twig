@@ -1,0 +1,175 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    <li>{% include 'SonataAdminBundle:Button:edit_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:history_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:list_button.html.twig' %}</li>
+    <li>{% include 'SonataAdminBundle:Button:create_button.html.twig' %}</li>
+{% endblock %}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': admin_pool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% block show %}
+    <div class="sonata-ba-view" ng-app="fileManager">
+
+        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
+
+        {% for name, view_group in admin.showgroups %}
+            <table class="table table-bordered">
+                {% if name %}
+                    <thead>
+                    {% block show_title %}
+                        <tr class="sonata-ba-view-title">
+                            <th colspan="2">
+                                {{ admin.trans(name) }}
+                            </th>
+
+                        </tr>
+                    {% endblock %}
+                    </thead>
+                {% endif %}
+
+                <tbody>
+                {% for field_name in view_group.fields %}
+                    {% block show_field %}
+                        <tr class="sonata-ba-view-container">
+                            {% if elements[field_name] is defined %}
+                                {{ elements[field_name]|render_view_element(object) }}
+                            {% endif %}
+                        </tr>
+                    {% endblock %}
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+
+
+        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
+
+
+        <h2>Ficheros</h2>
+
+        <table id="tableFiles" ng-controller="FileManagerController"  ng-model="files" class="table table-bordered">
+            <thead>
+            <th>Nombre fichero</th>
+            <th>Acciones</th>
+            </thead>
+            {% verbatim %}
+            <tbody ng-repeat="file in files">
+            <tr>
+                <td>
+                    {{ file.name }}
+                </td>
+
+                <td>
+                    <a href="#" class="btn btn-sm btn-default edit_link" title="Descargar">
+                        <i class="glyphicon glyphicon-download"></i>
+                        Descargar
+                    </a>
+                    <a ng-click="delete(file)" href="#" class="btn btn-sm btn-default edit_link" title="Borrar">
+                        <i class="glyphicon glyphicon-remove"></i>
+                        Borrar
+                    </a>
+
+
+                </td>
+            </tr>
+            </tbody>
+            {% endverbatim %}
+        </table>
+
+        <form action="{{ url('yuido_file_manager_upload', {'entityName': entity, 'entityId': object.id}) }}"
+              class="dropzone"
+              id="my-awesome-dropzone">
+
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('dropzone/downloads/css/dropzone.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('dropzone/downloads/dropzone.js') }}"></script>
+    <script src="{{ asset('angular/angular.min.js') }}"></script>
+
+    <script>
+        var fileManager = angular.module('fileManager', []);
+        fileManager.controller('FileManagerController', [
+            '$scope',
+            '$http',
+            function($scope, $http){
+
+                $scope.kk = function(){
+                    alert('kaka');
+                };
+                $scope.get = function(){
+                    $http.get('{{ url('yuido_file_manager_get', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}')
+                            .success(function(data){
+                                $scope.files = data;
+                            })
+                            .error(function(e){
+
+                            });
+
+                };
+                $scope.delete = function(file){
+                    console.log(file);
+                    $http.get('{{ url('yuido_file_manager_delete', {'entityName': '\\Yuido\\GestorBundle\\Entity\\Servidor', 'entityId': object.id}) }}' + '/' + file.id)
+                            .success(function(data){
+                                $scope.get();
+                            })
+                            .error(function(e){
+
+                            });
+                };
+
+                $scope.get();
+            }
+        ]);
+
+        $(function() {
+            var scope = angular.element(document.getElementById("tableFiles")).scope();
+
+
+            Dropzone.options.myAwesomeDropzone = {
+                addRemoveLinks: true,
+                removedfile: function(file) {
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                init: function() {
+                    this.on("queuecomplete", function() {
+
+                        scope.$apply(function () {
+                            scope.get();
+                        });
+                    });
+
+                }
+            };
+
+
+        });
+
+
+    </script>
+
+
+
+{% endblock %}

@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Symfony\Component\Validator\Constraints\Date;
@@ -69,6 +70,9 @@ class ServidorAdmin extends Admin{
                     'show' => array(),
                     'edit' => array(),
                     'delete' => array(),
+                    'filemanager' => array(
+                        'template' => 'YuidoFileManagerBundle::list__filemanager.html.twig'
+                    )
                 )));
     }
 
@@ -94,6 +98,11 @@ class ServidorAdmin extends Admin{
 
         });
         
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('filemanager', $this->getRouterIdParameter().'/filemanager');
     }
 
 }
